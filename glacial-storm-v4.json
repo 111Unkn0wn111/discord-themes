@@ -1,0 +1,39 @@
+{
+  "name": "Glacial Storm v4",
+  "author": "chatgpt",
+  "background": {
+    "image": "https://i.imgur.com/qRAUzfz.jpg",
+    "blur": true,
+    "opacity": 0.85,
+    "animation": {
+      "type": "lottie",
+      "url": "https://lottie.host/af999ffe-cf2c-4b4b-94fd-5e0f6dc2675e/nWBr7fnO4r.json",
+      "scale": 1.2,
+      "loop": true,
+      "speed": 1.0
+    }
+  },
+  "colors": {
+    "primary": "#0a0f1b",
+    "background": "#0a0f1b",
+    "background-secondary": "#101926",
+    "background-tertiary": "#1e2c3b",
+    "accent": "#3fa9f5",
+    "text-normal": "#e5f4ff",
+    "text-muted": "#b0c4d6",
+    "mention": "#b4d8ff",
+    "link": "#7ec8ff"
+  },
+  "fonts": {
+    "default": "Fira Code",
+    "code": "JetBrains Mono"
+  },
+  "scripts": [
+    {
+      "type": "plugin",
+      "name": "RainAndClickFX",
+      "description": "Adds rain sound, syncs rain speed to time, adds Minecraft click sound on UI interaction, and fades in new messages.",
+      "code": "(function() {\n  // Rain sound\n  const rainAudio = document.createElement('audio');\n  rainAudio.src = 'https://cdn.pixabay.com/audio/2021/08/08/audio_838420594f.mp3';\n  rainAudio.loop = true;\n  rainAudio.volume = 0.3;\n  rainAudio.id = 'rain-audio';\n  document.body.appendChild(rainAudio);\n  rainAudio.play();\n\n  // Click sound\n  const clickSound = new Audio('https://sounds-mp3.com/mp3/0001787.mp3');\n  clickSound.volume = 0.5;\n  const clickableSelectors = ['[aria-label^=\\\"Direct messages\\\"]', '[class*=\\\"guilds\\\"]', '[class*=\\\"channel\\\"]', '[class*=\\\"listItem\\\"]'];\n  document.addEventListener('click', function(e) {\n    if (clickableSelectors.some(sel => e.target.closest(sel))) {\n      clickSound.currentTime = 0;\n      clickSound.play();\n    }\n  });\n\n  // Time-based rain speed\n  const hour = new Date().getHours();\n  let speed = 1.0;\n  if (hour >= 20 || hour <= 6) speed = 2.5;\n  else if (hour >= 14 && hour <= 18) speed = 1.5;\n  else speed = 0.8;\n\n  const anim = document.querySelector('[data-lottie]');\n  if (anim && anim._lottie) anim._lottie.setSpeed(speed);\n\n  // Fade-in animation for new chat messages\n  const style = document.createElement('style');\n  style.innerHTML = `\n    .messageListItem__1aYv- {\n      opacity: 0;\n      animation: fadeIn 0.5s ease forwards;\n    }\n    @keyframes fadeIn {\n      from { opacity: 0; transform: translateY(5px); }\n      to { opacity: 1; transform: translateY(0); }\n    }\n  `;\n  document.head.appendChild(style);\n})();"
+    }
+  ]
+}
